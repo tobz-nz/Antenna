@@ -32,6 +32,7 @@ class Antenna
 	public function Antenna() 
 	{
 		$this->EE =& get_instance();
+		$this->EE->load->helper('url');
 
 		$tagdata = $this->EE->TMPL->tagdata;
 
@@ -53,7 +54,7 @@ class Antenna
 		}
 
 		//Deal with the parameters
-		$video_url = ($this->EE->TMPL->fetch_param('url')) ?  html_entity_decode($this->EE->TMPL->fetch_param('url')) : false;
+		$video_url = prep_url($this->EE->TMPL->fetch_param('url') ? html_entity_decode($this->EE->TMPL->fetch_param('url')) : false);
 		$max_width = ($this->EE->TMPL->fetch_param('max_width')) ? "&maxwidth=" . $this->EE->TMPL->fetch_param('max_width') : "";
 		$max_height = ($this->EE->TMPL->fetch_param('max_height')) ? "&maxheight=" . $this->EE->TMPL->fetch_param('max_height') : "";
 
