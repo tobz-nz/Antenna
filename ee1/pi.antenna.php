@@ -15,6 +15,35 @@ $plugin_info = array(
 );
 
 /**
+ * Prep URL
+ *
+ * Simply adds the http:// part if no scheme is included
+ *
+ * @access	public
+ * @param	string	the URL
+ * @return	string
+ */
+if ( ! function_exists('prep_url'))
+{
+	function prep_url($str = '')
+	{
+		if ($str == 'http://' OR $str == '')
+		{
+			return '';
+		}
+
+		$url = parse_url($str);
+
+		if ( ! $url OR ! isset($url['scheme']))
+		{
+			$str = 'http://'.$str;
+		}
+
+		return $str;
+	}
+}
+
+/**
  * The Antenna plugin will generate the YouTube or Vimeo embed
  * code for a single YouTube or Vimeo clip. It will also give
  * you back the Author, their URL, the video title,
@@ -66,7 +95,7 @@ class Antenna {
 		}
 
 		//Deal with the parameters
-		$video_url = ($TMPL->fetch_param('url')) ?  html_entity_decode($TMPL->fetch_param('url')) : false;
+		$video_url = prep_url($this->EE->TMPL->fetch_param('url') ? html_entity_decode($this->EE->TMPL->fetch_param('url')) : false);
 		$max_width = ($TMPL->fetch_param('max_width')) ? "&maxwidth=" . $TMPL->fetch_param('max_width') : "";
 		$max_height = ($TMPL->fetch_param('max_height')) ? "&maxheight=" . $TMPL->fetch_param('max_height') : "";
 
