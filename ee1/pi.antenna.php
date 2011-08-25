@@ -103,7 +103,18 @@ class Antenna {
 		if (strpos($video_url, "youtube.com/") !== FALSE) {
 			$url = "http://www.youtube.com/oembed?format=json&url=";
 		} else if (strpos($video_url, "vimeo.com/") !== FALSE) {
-			$url = "http://vimeo.com/api/oembed.json?url=";
+			$url = "http://vimeo.com/api/oembed.json?";
+			// add some vimeo specific paramaters
+			if ($this->EE->TMPL->fetch_param('vimeo_api')=='yes') {
+				$url .= "api=1&";
+			}
+			if ($this->EE->TMPL->fetch_param('vimeo_id')) {
+				$url .= "player_id=".$this->EE->TMPL->fetch_param('id')."&";
+			}
+			if ($this->EE->TMPL->fetch_param('vimeo_api_ready')) {
+				$url .= "api_ready=".$this->EE->TMPL->fetch_param('api_ready')."&";
+			}
+			$url .= "url=";
 		} else {
 			$tagdata = $FNS->var_swap($tagdata, $video_data);
 			$this->return_data = $tagdata;
