@@ -95,6 +95,12 @@ class Antenna
 		//Decode the cURL data
 		$video_info = json_decode($video_info);
 
+		// get vimeo thumbnail at a larger size
+		if ($this->EE->TMPL->fetch_param('thumbnail_width') && (strpos($video_url, "vimeo.com/") !== FALSE)) {
+			$thumb_width = ($this->EE->TMPL->fetch_param('thumbnail_width') ? $this->EE->TMPL->fetch_param('thumbnail_width') : $this->EE->TMPL->fetch_param('max_width')) || 100;
+			$video_info->thumbnail_url = preg_replace('/_(100)\.(jpg|png)/', '_'.($thumb_width<=640?$thumb_width:640).'.$2', $video_info->thumbnail_url);
+		}
+
 		//Handle a single tag
 		if ($mode == "single") 
 		{
